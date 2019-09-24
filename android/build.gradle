@@ -62,4 +62,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:${supportVersion}'
     compile 'com.facebook.react:react-native:+'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
 }

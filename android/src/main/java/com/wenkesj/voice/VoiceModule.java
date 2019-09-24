@@ -31,6 +31,8 @@ import com.facebook.react.modules.core.PermissionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import org.apache.commons.io.IOUtils;
+import java.io.InputStream;
 
 import javax.annotation.Nullable;
 
@@ -40,6 +42,7 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
   private SpeechRecognizer speech = null;
   private boolean isRecognizing = false;
   private String locale = null;
+  private Intent intent;
 
   public VoiceModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -75,7 +78,7 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
 
     speech.setRecognitionListener(this);
 
-    final Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+    intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
     // Load the intent with options from JS
     ReadableMapKeySetIterator iterator = opts.keySetIterator();
@@ -123,6 +126,8 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
     }
 
     intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, getLocale(this.locale));
+    intent.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
+    intent.putExtra("android.speech.extra.GET_AUDIO", true);
     speech.startListening(intent);
   }
 
@@ -271,6 +276,7 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
     callback.invoke(isRecognizing);
   }
 
+
   private void sendEvent(String eventName, @Nullable WritableMap params) {
     this.reactContext
       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
@@ -347,8 +353,11 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
     for (String result : matches) {
       arr.pushString(result);
     }
-
+    Uri audioUri = intent.getData();
+    ContentResolver contentResolver = getContentResolver();
+    InputStream inputStream = contentResolver.openInputStream(audioUri);
     WritableMap event = Arguments.createMap();
+    event.put("audioString", IOUtils.toString(inputStream, "utf-8")); // Write audio to event
     event.putArray("value", arr);
     sendEvent("onSpeechResults", event);
     Log.d("ASR", "onResults()");
