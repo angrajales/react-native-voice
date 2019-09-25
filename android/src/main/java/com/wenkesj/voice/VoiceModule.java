@@ -28,11 +28,12 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import org.apache.commons.io.IOUtils;
-import java.io.InputStream;
 
 import javax.annotation.Nullable;
 
