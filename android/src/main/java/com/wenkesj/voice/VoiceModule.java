@@ -354,7 +354,7 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
       arr.pushString(result);
     }
     Uri audioUri = intent.getData();
-    ContentResolver contentResolver = getContentResolver();
+    ContentResolver contentResolver = this.getApplicationContext().getContentResolver();
     InputStream inputStream = contentResolver.openInputStream(audioUri);
     WritableMap event = Arguments.createMap();
     event.putString("audioString", IOUtils.toString(inputStream, "utf-8")); // Write audio to event
