@@ -1,5 +1,7 @@
 package com.wenkesj.voice;
 
+import android.app.Activity;
+
 public interface PermissionAwareActivity {
     int checkPermission(String permission, int pid, int uid);
     int checkSelfPermission(String permission);
