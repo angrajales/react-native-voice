@@ -27,9 +27,6 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.facebook.react.modules.core.PermissionAwareActivity;
-import com.facebook.react.modules.core.PermissionListener;
-
 
 import org.apache.commons.io.IOUtils;
 
@@ -43,10 +40,10 @@ import java.util.Locale;
 import javax.annotation.Nullable;
 
 
-
 public class VoiceModule extends ReactContextBaseJavaModule implements RecognitionListener {
 
     final ReactApplicationContext reactContext;
+
     private SpeechRecognizer speech = null;
     private boolean isRecognizing = false;
     private String locale = null;
