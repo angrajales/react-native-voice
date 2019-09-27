@@ -161,7 +161,7 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
 
     @ReactMethod
     public void startSpeech(final String locale, final ReadableMap opts, final Callback callback) {
-        if (!isPermissionGranted() && opts.getBoolean("REQUEST_PERMISSIONS_AUTO")) {
+        /*if (!isPermissionGranted() && opts.getBoolean("REQUEST_PERMISSIONS_AUTO")) {
             String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO};
             if (this.getCurrentActivity() != null) {
                 ((PermissionAwareActivity) this.getCurrentActivity()).requestPermissions(PERMISSIONS, 1, new PermissionListener() {
@@ -179,7 +179,7 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
                 });
             }
             return;
-        }
+        }*/
         startSpeechWithPermissions(locale, opts, callback);
     }
 
