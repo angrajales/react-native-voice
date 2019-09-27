@@ -13,8 +13,9 @@ import android.speech.RecognitionListener;
 import android.speech.RecognitionService;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -161,25 +162,18 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
 
     @ReactMethod
     public void startSpeech(final String locale, final ReadableMap opts, final Callback callback) {
-        /*if (!isPermissionGranted() && opts.getBoolean("REQUEST_PERMISSIONS_AUTO")) {
+        if (!isPermissionGranted() && opts.getBoolean("REQUEST_PERMISSIONS_AUTO")) {
             String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO};
             if (this.getCurrentActivity() != null) {
-                ((PermissionAwareActivity) this.getCurrentActivity()).requestPermissions(PERMISSIONS, 1, new PermissionListener() {
-                    public boolean onRequestPermissionsResult(final int requestCode,
-                                                              @NonNull final String[] permissions,
-                                                              @NonNull final int[] grantResults) {
-                        boolean permissionsGranted = true;
-                        for (int i = 0; i < permissions.length; i++) {
-                            final boolean granted = grantResults[i] == PackageManager.PERMISSION_GRANTED;
-                            permissionsGranted = permissionsGranted && granted;
-                        }
-                        startSpeechWithPermissions(locale, opts, callback);
-                        return permissionsGranted;
-                    }
-                });
+                if(this.getCurrentActivity().shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)){
+                    Toast.makeText(this.getReactApplicationContext(), "La app necesita acceder al microfono.", Toast.LENGTH_LONG).show();
+                }else {
+                    ActivityCompat.requestPermissions(this.getCurrentActivity(), PERMISSIONS, 1);
+                    startSpeechWithPermissions(locale, opts, callback);
+                }
             }
             return;
-        }*/
+        }
         startSpeechWithPermissions(locale, opts, callback);
     }
 
