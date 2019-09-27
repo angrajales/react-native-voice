@@ -15,7 +15,6 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -165,12 +164,8 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
         if (!isPermissionGranted() && opts.getBoolean("REQUEST_PERMISSIONS_AUTO")) {
             String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO};
             if (this.getCurrentActivity() != null) {
-                if(this.getCurrentActivity().shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)){
-                    Toast.makeText(this.getReactApplicationContext(), "La app necesita acceder al microfono.", Toast.LENGTH_LONG).show();
-                }else {
-                    ActivityCompat.requestPermissions(this.getCurrentActivity(), PERMISSIONS, 1);
-                    startSpeechWithPermissions(locale, opts, callback);
-                }
+                ActivityCompat.requestPermissions(this.getCurrentActivity(), PERMISSIONS, 1);
+                startSpeechWithPermissions(locale, opts, callback);
             }
             return;
         }
